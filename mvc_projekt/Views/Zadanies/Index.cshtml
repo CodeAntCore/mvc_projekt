@@ -1,0 +1,98 @@
+﻿<form method="get" asp-action="Index">
+    <input type="text" name="searchString" value="@ViewData["CurrentFilter"]" placeholder="Szukaj po tytule..." />
+    <select name="statusId">
+        <option value="">Wybierz status</option>
+        @foreach (var status in ViewBag.Statuses)
+        {
+            <option value="@status.Id" selected="@(status.Id == (int?)ViewData["CurrentStatus"])">@status.Nazwa</option>
+        }
+    </select>
+    <select name="categoryId">
+        <option value="">Wybierz kategorię</option>
+        @foreach (var category in ViewBag.Categories)
+        {
+            <option value="@category.Id" selected="@(category.Id == (int?)ViewData["CurrentCategory"])">@category.Nazwa</option>
+        }
+    </select>
+    <input type="submit" value="Search" />
+</form>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["TitleSortParam"]"
+                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                   asp-route-statusId="@ViewData["CurrentStatus"]"
+                   asp-route-categoryId="@ViewData["CurrentCategory"]">Tytuł</a>
+            </th>
+            <th>Opis</th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["CategorySortParam"]"
+                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                   asp-route-statusId="@ViewData["CurrentStatus"]"
+                   asp-route-categoryId="@ViewData["CurrentCategory"]">Kategoria</a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@ViewData["StatusSortParam"]"
+                   asp-route-searchString="@ViewData["CurrentFilter"]"
+                   asp-route-statusId="@ViewData["CurrentStatus"]"
+                   asp-route-categoryId="@ViewData["CurrentCategory"]">Status</a>
+            </th>
+            <th>Zadanie Nadrzędne</th>
+            <th>Akcje</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Tytul</td>
+                <td>@item.Opis</td>
+                <td>@item.Kategoria?.Nazwa</td>
+                <td>@item.Status?.Nazwa</td>
+                <td>@item.ZadanieNadrzedne?.Tytul</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    @if ((int)ViewData["PageNumber"] > 1)
+    {
+        <a asp-action="Index"
+           asp-route-pageNumber="@(Convert.ToInt32(ViewData["PageNumber"]) - 1)"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-searchString="@ViewData["CurrentFilter"]"
+           asp-route-statusId="@ViewData["CurrentStatus"]"
+           asp-route-categoryId="@ViewData["CurrentCategory"]">Poprzednia</a>
+    }
+
+    @for (int i = 1; i <= (int)ViewData["TotalPages"]; i++)
+    {
+        <a asp-action="Index"
+           asp-route-pageNumber="@i"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-searchString="@ViewData["CurrentFilter"]"
+           asp-route-statusId="@ViewData["CurrentStatus"]"
+           asp-route-categoryId="@ViewData["CurrentCategory"]">@i</a>
+    }
+
+    @if ((int)ViewData["PageNumber"] < (int)ViewData["TotalPages"])
+    {
+        <a asp-action="Index"
+           asp-route-pageNumber="@(Convert.ToInt32(ViewData["PageNumber"]) + 1)"
+           asp-route-sortOrder="@ViewData["CurrentSort"]"
+           asp-route-searchString="@ViewData["CurrentFilter"]"
+           asp-route-statusId="@ViewData["CurrentStatus"]"
+           asp-route-categoryId="@ViewData["CurrentCategory"]">Następna</a>
+    }
+</div>

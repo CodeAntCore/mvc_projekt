@@ -1,0 +1,57 @@
+﻿@model mvc_projekt.Models.Zadanie
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Zadanie</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Tytul" class="control-label"></label>
+                <input asp-for="Tytul" class="form-control" />
+                <span asp-validation-for="Tytul" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Opis" class="control-label"></label>
+                <input asp-for="Opis" class="form-control" />
+                <span asp-validation-for="Opis" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="KategoriaId" class="control-label"></label>
+                <select asp-for="KategoriaId" class ="form-control" asp-items="ViewBag.KategoriaId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="StatusId" class="control-label"></label>
+                <select asp-for="StatusId" class ="form-control" asp-items="ViewBag.StatusId"></select>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.ZadanieNadrzedneId, "Zadanie nadrzędne", new { @class = "control-label" })
+                @Html.DropDownList("ZadanieNadrzedneId", (SelectList)ViewData["ZadanieNadrzedneId"], "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ZadanieNadrzedneId, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.ZadaniaPodrzedneId, "Zadanie podrzędne", new { @class = "control-label" })
+                @Html.DropDownList("ZadaniaPodrzedneId", (SelectList)ViewData["ZadaniaPodrzedneId"], "", new { @class = "form-control" })
+                @Html.ValidationMessageFor(model => model.ZadaniaPodrzedneId, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

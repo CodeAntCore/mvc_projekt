@@ -1,0 +1,25 @@
+﻿@{
+    ViewBag.Title = "Statystyki";
+}
+
+<h2>Statystyki</h2>
+
+<p>Liczba zadań: @ViewBag.LiczbaZadan</p>
+<p>Liczba kategorii: @ViewBag.LiczbaKategorii</p>
+<p>Liczba statusów: @ViewBag.LiczbaStatusow</p>
+
+<h3>Zadania według kategorii:</h3>
+<ul>
+    @foreach (var kategoria in (IEnumerable<dynamic>)ViewBag.ZadaniaWedlugKategorii)
+    {
+        <li>@kategoria.Kategoria: @kategoria.Liczba</li>
+    }
+</ul>
+
+<h3>Zadania według statusu:</h3>
+<ul>
+    @foreach (var status in (IEnumerable<dynamic>)ViewBag.ZadaniaWedlugStatusu)
+    {
+        <li>@status.Status: @status.Liczba</li>
+    }
+</ul>
